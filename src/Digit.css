@@ -1,0 +1,12 @@
+.digit {
+  height: 10rem;
+}
+
+.digit .number {
+  font-size: 8rem;
+}
+
+.digit .value {
+  font-size: smaller;
+  color: rgb(103, 104, 94);
+}
