@@ -9,7 +9,7 @@ interface IAppState {
 
 function getBases() {
   const bases: number[] = [];
-  for (let i = 2; i <= 10; i++) {
+  for (let i = 2; i <= 16; i++) {
     bases.push(i);
   }
   return bases;
@@ -21,18 +21,24 @@ function App() {
     base: 10,
   });
 
-  function changeNumber(newValue: number) {
-    if (newValue >= 0) {
+  const isNumberTooBig = (value: number, base: number): boolean => {
+    return value.toString(base).length > 16;
+  };
+
+  const changeNumber = (newValue: number) => {
+    if (newValue >= 0 && !isNumberTooBig(newValue, state.base)) {
       setState({
         ...state,
         number: newValue,
       });
     }
-  }
+  };
 
   const changeNumberBy = (diff: number) => changeNumber(state.number + diff);
 
   const changeBase = (newBase: number) => {
+    if (isNumberTooBig(state.number, newBase)) return;
+
     setState({
       ...state,
       base: newBase,
@@ -42,7 +48,6 @@ function App() {
     return number
       .toString(base)
       .split("")
-      .map((s) => parseInt(s, 10))
       .map((n, i, arr) => (
         <Digit
           key={arr.length - i - 1}
@@ -57,11 +62,13 @@ function App() {
     <div className="App">
       <div className="top-panel">
         <input
-          type="number"
           placeholder="Input the number here"
-          min="0"
           value={state.number}
-          onChange={(event) => changeNumber(parseInt(event.target.value))}
+          onChange={(event) =>
+            changeNumber(
+              event.target.value !== "" ? parseInt(event.target.value) : 0
+            )
+          }
         />
         <button onClick={() => changeNumberBy(1)}>+</button>
         <button onClick={() => changeNumberBy(-1)}>-</button>

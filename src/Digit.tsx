@@ -2,14 +2,14 @@ import React from "react";
 import "./Digit.css";
 
 interface IDigitProps {
-  digit: number;
+  digit: string;
   value: number;
   onChange: (diff: number) => void;
 }
 export default function Digit(props: IDigitProps) {
   return (
     <div className="digit">
-      <div className="number">{props.digit}</div>
+      <div className="number">{props.digit.toUpperCase()}</div>
       <div>
         <button onClick={() => props.onChange(props.value)}>+</button>
         <button onClick={() => props.onChange(-props.value)}>-</button>
